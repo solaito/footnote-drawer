@@ -5,17 +5,28 @@ document.addEventListener('DOMContentLoaded', () => {
             // 領域外クリックの場合閉じるようイベントリスナーを登録
             document.addEventListener('click', removeDrawer);
 
+
+            // ヘッダー
+            let drawer_header = document.createElement('div');
+            drawer_header.setAttribute("class", 'drawer-footnotes-header');
+            drawer_header.innerText = 'Footnotes';
+
+            // コンテナ
+            let drawer_contents= document.createElement('div');
+            drawer_contents.setAttribute("class", 'drawer-footnotes-contents');
             let footnote = document.getElementById(event.currentTarget.dataset.drawerFootnotesTo).getElementsByClassName('drawer-footnotes-endnotes-contents')[0].cloneNode(true);
             let number = document.createElement('span');
             number.innerText = '[' + event.currentTarget.dataset.drawerFootnotesNumber + ']';
+            drawer_contents.appendChild(number);
+            drawer_contents.appendChild(footnote);
 
-            let drawer = document.createElement('div');
-            drawer.setAttribute("id", 'drawer-footnotes');
-            drawer.appendChild(number);
-            drawer.appendChild(footnote);
+            let drawer_container = document.createElement('div');
+            drawer_container.setAttribute("id", 'drawer-footnotes-container');
+            drawer_container.appendChild(drawer_header);
+            drawer_container.appendChild(drawer_contents);
 
             let article = event.currentTarget.closest('article');
-            article.insertBefore(drawer, article.lastChild)
+            article.insertBefore(drawer_container, article.lastChild)
 
             // href="#"属性が設定されたaタグにイベントリスナーを設定しているため、デフォルトの挙動でページ内遷移が発生する。
             // デフォルトの挙動はJavascriptが無効だった場合に必要となる。
@@ -27,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function init() {
     // 既存のドロワーがあれば削除
-    let drawer = document.getElementById("drawer-footnotes");
+    let drawer = document.getElementById("drawer-footnotes-container");
     if (drawer) {
         drawer.remove();
     }
@@ -40,8 +51,8 @@ function removeDrawer(event) {
         return;
     }
     // ドロワー以外がクリックされた場合はドロワーを削除する
-    if (event.target.closest('#drawer-footnotes') === null) {
-        let drawer = document.getElementById("drawer-footnotes");
+    if (event.target.closest('#drawer-footnotes-container') === null) {
+        let drawer = document.getElementById("drawer-footnotes-container");
         if (drawer) {
             drawer.remove();
             this.removeEventListener('click', removeDrawer);
