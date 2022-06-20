@@ -65,7 +65,7 @@ class DrawerFootnotes
             $lis .= sprintf('<li id="%s"><b><a href="#%s">^</a></b> %s</li>', $footnote['id'], $footnote['ref_id'], $footnote['content']);
         }
 
-        return sprintf('<h2>%s</h2><ol>%s</ol>', __('Footnotes'), $lis);
+        return sprintf('<h2>%s</h2><ol class="drawer-footnotes-endnotes">%s</ol>', __('Footnotes'), $lis);
     }
 
     public function add_temp_endnotes_filter($content)
