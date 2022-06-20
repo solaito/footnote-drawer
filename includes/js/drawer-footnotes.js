@@ -1,19 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.drawer-footnotes-reference').forEach((reference) => {
-        console.log(reference);
         reference.addEventListener('click', (event) => {
             init();
             // 領域外クリックの場合閉じるようイベントリスナーを登録
             document.addEventListener('click', removeDrawer);
 
             let id = event.currentTarget.id.replace(/-ref/, "");
-            let footnote = document.getElementById(id).innerHTML;
+            let footnote = document.getElementById(id).getElementsByClassName('drawer-footnotes-endnotes-contents')[0].innerHTML;
             let footnotes = document.createElement('div');
             footnotes.setAttribute("id", 'drawer-footnotes');
             footnotes.insertAdjacentHTML('afterbegin', footnote)
 
             let article = document.getElementById('post-1');
             article.insertBefore(footnotes, article.lastChild)
+
+            // href="#"属性が設定されたaタグにイベントリスナーを設定しているため、デフォルトの挙動でページ内遷移が発生する。
+            // デフォルトの挙動はJavascriptが無効だった場合に必要となる。
+            // Javascriptが有効な場合は不要なので、デフォルトの挙動は無効とする。
+            event.preventDefault();
         })
     })
 });

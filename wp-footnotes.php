@@ -46,25 +46,27 @@ class DrawerFootnotes
     public function footnote_callback($atts, $content = null)
     {
         $n = count($this->footnotes) + 1;
-        $ref_id  = 'drawer-footnotes-ref-'.$n;
+        $id = 'drawer-footnotes-' . $n;
+        $ref_id = 'drawer-footnotes-ref-' . $n;
         array_push($this->footnotes,
             array(
-                'id' => 'drawer-footnotes-' . $n,
+                'id' => $id,
                 'ref_id' => $ref_id,
                 'content' => $content
             ));
         //return sprintf('<sup id="%s" class="drawer-footnotes-reference"><a href="javascript:void(0);" onclick="drawer_footnotes(this);" >[%d]</a></sup>',
-        return sprintf('<sup id="%s" class="drawer-footnotes-reference"><a href="javascript:void(0);">[%d]</a></sup>',
-            $ref_id ,$n);
+        return sprintf('<sup id="%s" class="drawer-footnotes-reference"><a href="#%s">[%d]</a></sup>',
+            $ref_id, $id, $n);
     }
 
     public function endnotes_callback($atts, $content = null)
     {
         $lis = '';
         foreach ($this->footnotes as $footnote) {
-            $lis .= sprintf('<li id="%s"><b><a href="#%s">^</a></b> %s</li>', $footnote['id'], $footnote['ref_id'], $footnote['content']);
+            $jump_link = sprintf('<b><a href="#%s">^</a></b>', $footnote['ref_id']);
+            $content = sprintf('<span class="drawer-footnotes-endnotes-contents">%s</span>', $footnote['content']);
+            $lis .= sprintf('<li id="%s">%s%s</li>', $footnote['id'], $jump_link, $content);
         }
-
         return sprintf('<h2>%s</h2><ol class="drawer-footnotes-endnotes">%s</ol>', __('Footnotes'), $lis);
     }
 
