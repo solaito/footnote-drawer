@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             footnotes.appendChild(number);
             footnotes.appendChild(footnote);
 
-            let article = document.getElementById('post-1');
+            let article = event.currentTarget.closest('article');
             article.insertBefore(footnotes, article.lastChild)
 
             // href="#"属性が設定されたaタグにイベントリスナーを設定しているため、デフォルトの挙動でページ内遷移が発生する。
