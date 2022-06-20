@@ -18,6 +18,11 @@
 .drawer-footnotes-header {
     display: flex;
     justify-content: space-between;
+    margin: 10px 0 15px 0;
+}
+
+.drawer-footnotes-contents sup {
+    margin-right: 10px;
 }
 
 .drawer-footnotes-close-button {
