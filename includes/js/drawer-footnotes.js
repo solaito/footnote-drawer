@@ -5,11 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // 領域外クリックの場合閉じるようイベントリスナーを登録
             document.addEventListener('click', removeDrawer);
 
-            let id = event.currentTarget.id.replace(/-ref/, "");
-            let footnote = document.getElementById(id).getElementsByClassName('drawer-footnotes-endnotes-contents')[0].innerHTML;
+            let footnote = document.getElementById(event.currentTarget.dataset.drawerFootnotesTo).getElementsByClassName('drawer-footnotes-endnotes-contents')[0].cloneNode(true);
+            let number = document.createElement('span');
+            number.innerText = '[' + event.currentTarget.dataset.drawerFootnotesNumber + ']';
+
             let footnotes = document.createElement('div');
             footnotes.setAttribute("id", 'drawer-footnotes');
-            footnotes.insertAdjacentHTML('afterbegin', footnote)
+            footnotes.appendChild(number);
+            footnotes.appendChild(footnote);
 
             let article = document.getElementById('post-1');
             article.insertBefore(footnotes, article.lastChild)
