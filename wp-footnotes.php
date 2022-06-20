@@ -71,7 +71,7 @@ class DrawerFootnotes
     {
         $lis = '';
         foreach ($this->footnotes as $footnote) {
-            $jump_link = sprintf('<b><a href="#%s">^</a></b>', $footnote['ref_id']);
+            $jump_link = sprintf('<b class="drawer-footnotes-scroll-up""><a href="#%s">^</a></b>', $footnote['ref_id']);
             $content = sprintf('<span class="drawer-footnotes-endnotes-contents">%s</span>', $footnote['content']);
             $lis .= sprintf('<li id="%s">%s%s</li>', $footnote['id'], $jump_link, $content);
         }

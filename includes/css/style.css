@@ -11,6 +11,9 @@
     opacity: 0.9;
 }
 
+.drawer-footnotes-scroll-up {
+    margin-right: 8px;
+}
 .drawer-footnotes-endnotes a {
     text-decoration: none;
 }
@@ -22,7 +25,7 @@
 }
 
 .drawer-footnotes-contents sup {
-    margin-right: 10px;
+    margin-right: 8px;
 }
 
 .drawer-footnotes-close-button {
