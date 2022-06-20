@@ -1,14 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.drawer-footnotes-reference').forEach((reference) => {
         reference.addEventListener('click', (event) => {
-            init();
+            // 既存のドロワーがあれば削除
+            removeDrawer(event);
             // 領域外クリックの場合閉じるようイベントリスナーを登録
-            document.addEventListener('click', removeDrawer);
+            document.addEventListener('click', clickOutsideRemoveDrawer);
 
             // ヘッダー
             let drawer_header = document.createElement('div');
             drawer_header.setAttribute("class", 'drawer-footnotes-header');
             drawer_header.innerText = 'Footnotes';
+            let drawer_close_button = document.createElement('button');
+            drawer_close_button.setAttribute('class', 'drawer-footnotes-close-button');
+            drawer_close_button.addEventListener('click', removeDrawer);
+            drawer_header.appendChild(drawer_close_button);
 
             // コンテナ
             let drawer_contents = document.createElement('div');
@@ -35,15 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 });
 
-function init() {
-    // 既存のドロワーがあれば削除
+function removeDrawer(event) {
     let drawer = document.getElementById("drawer-footnotes-container");
     if (drawer) {
         drawer.remove();
+        document.removeEventListener('click', clickOutsideRemoveDrawer);
     }
 }
 
-function removeDrawer(event) {
+function clickOutsideRemoveDrawer(event) {
     // ドロワー展開時のクリックイベントも拾うので、その場合は抜ける
     // 他の処理との兼ね合いもあるので、イベントの伝播は止めない
     if (event.target.closest('.drawer-footnotes-reference') !== null) {
@@ -51,10 +56,6 @@ function removeDrawer(event) {
     }
     // ドロワー以外がクリックされた場合はドロワーを削除する
     if (event.target.closest('#drawer-footnotes-container') === null) {
-        let drawer = document.getElementById("drawer-footnotes-container");
-        if (drawer) {
-            drawer.remove();
-            this.removeEventListener('click', removeDrawer);
-        }
+        removeDrawer(event)
     }
 }
