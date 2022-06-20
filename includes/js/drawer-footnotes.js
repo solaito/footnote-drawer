@@ -5,17 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // 領域外クリックの場合閉じるようイベントリスナーを登録
             document.addEventListener('click', removeDrawer);
 
-
             // ヘッダー
             let drawer_header = document.createElement('div');
             drawer_header.setAttribute("class", 'drawer-footnotes-header');
             drawer_header.innerText = 'Footnotes';
 
             // コンテナ
-            let drawer_contents= document.createElement('div');
+            let drawer_contents = document.createElement('div');
             drawer_contents.setAttribute("class", 'drawer-footnotes-contents');
             let footnote = document.getElementById(event.currentTarget.dataset.drawerFootnotesTo).getElementsByClassName('drawer-footnotes-endnotes-contents')[0].cloneNode(true);
-            let number = document.createElement('span');
+            let number = document.createElement('sup');
             number.innerText = '[' + event.currentTarget.dataset.drawerFootnotesNumber + ']';
             drawer_contents.appendChild(number);
             drawer_contents.appendChild(footnote);
