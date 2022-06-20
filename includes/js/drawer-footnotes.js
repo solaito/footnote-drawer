@@ -9,13 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
             let number = document.createElement('span');
             number.innerText = '[' + event.currentTarget.dataset.drawerFootnotesNumber + ']';
 
-            let footnotes = document.createElement('div');
-            footnotes.setAttribute("id", 'drawer-footnotes');
-            footnotes.appendChild(number);
-            footnotes.appendChild(footnote);
+            let drawer = document.createElement('div');
+            drawer.setAttribute("id", 'drawer-footnotes');
+            drawer.appendChild(number);
+            drawer.appendChild(footnote);
 
             let article = event.currentTarget.closest('article');
-            article.insertBefore(footnotes, article.lastChild)
+            article.insertBefore(drawer, article.lastChild)
 
             // href="#"属性が設定されたaタグにイベントリスナーを設定しているため、デフォルトの挙動でページ内遷移が発生する。
             // デフォルトの挙動はJavascriptが無効だった場合に必要となる。
