@@ -54,7 +54,6 @@ class DrawerFootnotes
                 'ref_id' => $ref_id,
                 'content' => $content
             ));
-        //return sprintf('<sup id="%s" class="drawer-footnotes-reference"><a href="javascript:void(0);" onclick="drawer_footnotes(this);" >[%d]</a></sup>',
         return sprintf('<sup id="%s" class="drawer-footnotes-reference" data-drawer-footnotes-number="%s" data-drawer-footnotes-to="%s"><a href="#%s">[%d]</a></sup>',
             $ref_id, $n, $id, $id, $n);
     }
