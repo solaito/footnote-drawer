@@ -37,10 +37,10 @@ function removeDrawer(event) {
         return;
     }
     // ドロワー以外がクリックされた場合はドロワーを削除する
-    if (event.target.closest('#drawer-footnote') === null) {
-        let hoge = document.getElementById("drawer-footnotes");
-        if (hoge) {
-            hoge.remove();
+    if (event.target.closest('#drawer-footnotes') === null) {
+        let drawer = document.getElementById("drawer-footnotes");
+        if (drawer) {
+            drawer.remove();
             this.removeEventListener('click', removeDrawer);
         }
     }
