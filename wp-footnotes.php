@@ -19,7 +19,16 @@ function drawer_footnote_enqueue_scripts()
 {
     $data = get_file_data(DRAWER_FOOTNOTE_PLUGIN, array('version' => 'Version'));
     $version = $data['version'];
+    $drawer_footnotes = array(
+        'plugin' => array(
+            'text' => array(
+                'footnotes' => __('Footnotes'),
+            )
+        )
+    );
+    //wp_localize_script('drawer-footnotes-hoge', 'drawer-footnotes-piyo', $param);
     wp_enqueue_script('drawer-footnotes', DRAWER_FOOTNOTE_PLUGIN_DIR_URL . 'includes/js/drawer-footnotes.js', null, $version);
+    wp_localize_script('drawer-footnotes', 'drawer_footnotes', $drawer_footnotes);
     wp_enqueue_style('drawer_footnotes', DRAWER_FOOTNOTE_PLUGIN_DIR_URL . 'includes/css/style.css', null, $version);
 }
 

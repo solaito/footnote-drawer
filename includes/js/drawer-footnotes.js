@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const createHeader = () => {
     let header = document.createElement('div');
     header.setAttribute("class", 'drawer-footnotes-header');
-    header.innerText = 'Footnotes';
+    header.innerText = drawer_footnotes.plugin.text.footnotes;
     let close_button = document.createElement('button');
     close_button.setAttribute('type', 'button');
     close_button.setAttribute('class', 'drawer-footnotes-close-button');
