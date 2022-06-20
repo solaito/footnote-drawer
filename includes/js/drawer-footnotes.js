@@ -47,7 +47,7 @@ const createContents = (event) => {
     return contents;
 }
 
-const removeDrawer = (event) => {
+const removeDrawer = () => {
     let drawer = document.getElementById("drawer-footnotes-container");
     if (drawer) {
         drawer.remove();
@@ -63,6 +63,6 @@ const clickOutsideRemoveDrawer = (event) => {
     }
     // ドロワー以外がクリックされた場合はドロワーを削除する
     if (event.target.closest('#drawer-footnotes-container') === null) {
-        removeDrawer(event)
+        removeDrawer()
     }
 }
