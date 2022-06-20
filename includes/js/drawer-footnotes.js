@@ -27,6 +27,7 @@ const createHeader = () => {
     header.setAttribute("class", 'drawer-footnotes-header');
     header.innerText = 'Footnotes';
     let close_button = document.createElement('button');
+    close_button.setAttribute('type', 'button');
     close_button.setAttribute('class', 'drawer-footnotes-close-button');
     close_button.addEventListener('click', removeDrawer);
     header.appendChild(close_button);

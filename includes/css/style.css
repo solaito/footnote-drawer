@@ -19,3 +19,16 @@
     display: flex;
     justify-content: space-between;
 }
+
+.drawer-footnotes-close-button {
+    background-color: inherit;
+    border: none;
+    color: white;
+    padding: 0.5em;
+    line-height: 0;
+}
+
+.drawer-footnotes-close-button::after {
+    display: inline-block;
+    content: "\00d7";
+}
