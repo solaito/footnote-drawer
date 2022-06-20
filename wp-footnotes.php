@@ -10,51 +10,66 @@ Author URI: http://URI_Of_The_Plugin_Author
 License: A "Slug" license name e.g. GPL2
 */
 
-class TFN
+define("DRAWER_FOOTNOTE_PLUGIN", __FILE__);
+define("DRAWER_FOOTNOTE_PLUGIN_BASENAME", plugin_basename(DRAWER_FOOTNOTE_PLUGIN));
+define("DRAWER_FOOTNOTE_PLUGIN_DIR_URL", plugin_dir_url(DRAWER_FOOTNOTE_PLUGIN));
+
+add_action('wp_enqueue_scripts', 'drawer_footnote_enqueue_scripts');
+function drawer_footnote_enqueue_scripts()
+{
+    $data = get_file_data(DRAWER_FOOTNOTE_PLUGIN, array('version' => 'Version'));
+    $version = $data['version'];
+    wp_enqueue_script('drawer-footnotes', DRAWER_FOOTNOTE_PLUGIN_DIR_URL . 'includes/js/drawer-footnotes.js', null, $version);
+    wp_enqueue_style('drawer_footnotes', DRAWER_FOOTNOTE_PLUGIN_DIR_URL . 'includes/css/style.css', null, $version);
+}
+
+class DrawerFootnotes
 {
     private $footnotes;
 
     /*
      * MEMO:
      * the_content -> shortcodeの順で処理されるのでトリッキーなことをしている
-     * 以下の処理順でコンテンツの末尾に脚注リストを差し込む
-     * ・the_contentでコンテンツ末尾に脚注リスト用のショートコードを追加
+     * 以下の処理順でコンテンツの末尾に文末脚注を差し込む
+     * ・the_contentでコンテンツ末尾に文末脚注用のショートコードを追加
      * ・それぞれの脚注をショートコードで拾い、クラス変数に格納する
-     * ・脚注リスト用のショートコードでそれぞれの脚注をまとめてリスト化
+     * ・文末脚注用のショートコードでそれぞれの脚注をまとめてリスト化
      */
     public function __construct()
     {
         $this->footnotes = [];
-        add_filter('the_content', array($this, 'add_temp_list'));
-        add_shortcode('tfn', array($this, 'register_footnotes'));
-        add_shortcode('tfn_list', array($this, 'replace_temp_list'));
+        add_filter('the_content', array($this, 'add_temp_endnotes_filter'));
+        add_shortcode('dfn', array($this, 'footnote_callback'));
+        add_shortcode('dfn_end', array($this, 'endnotes_callback'));
     }
 
-    public function register_footnotes($atts, $content = null)
+    public function footnote_callback($atts, $content = null)
     {
         $n = count($this->footnotes) + 1;
         array_push($this->footnotes,
             array(
-                'id' => 'cite_note-' . $n,
+                'id' => 'drawer-footnotes-' . $n,
                 'content' => $content
             ));
-        return sprintf('<sup>[%d]</sup>', $n);
+        //return sprintf('<sup id="%s" class="drawer-footnotes-reference"><a href="javascript:void(0);" onclick="drawer_footnotes(this);" >[%d]</a></sup>',
+        return sprintf('<sup id="%s" class="drawer-footnotes-reference"><a href="javascript:void(0);">[%d]</a></sup>',
+            'drawer-footnotes-ref-'.$n ,$n);
     }
 
-    public function replace_temp_list($atts, $content = null)
+    public function endnotes_callback($atts, $content = null)
     {
         $lis = '';
         foreach ($this->footnotes as $footnote) {
-            $lis .= sprintf('<li id="%s">%s</li>', footnote['id'], $footnote['content']);
+            $lis .= sprintf('<li id="%s">%s</li>', $footnote['id'], $footnote['content']);
         }
 
         return sprintf('<h2>%s</h2><ol>%s</ol>', __('Footnotes'), $lis);
     }
 
-    public function add_temp_list($content)
+    public function add_temp_endnotes_filter($content)
     {
-        return $content . '[tfn_list]';
+        return $content . '[dfn_end]';
     }
 }
 
-$tfn = new TFN();
+$tfn = new DrawerFootnotes();
