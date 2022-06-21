@@ -46,10 +46,16 @@ class DrawerFootnotes
      */
     public function __construct()
     {
-        $this->footnotes = [];
+        // the_postが最初に呼び出されるのでそのタイミングで初期化
+        add_filter('the_post', array($this, 'init'));
         add_filter('the_content', array($this, 'add_temp_endnotes_filter'));
         add_shortcode('dfn', array($this, 'footnote_callback'));
         add_shortcode('dfn_end', array($this, 'endnotes_callback'));
+    }
+
+    public function init()
+    {
+        $this->footnotes = [];
     }
 
     public function footnote_callback($atts, $content = null)
@@ -75,6 +81,7 @@ class DrawerFootnotes
             $content = sprintf('<span class="drawer-footnotes-endnotes-contents">%s</span>', $footnote['content']);
             $lis .= sprintf('<li id="%s">%s%s</li>', $footnote['id'], $jump_link, $content);
         }
+
         return sprintf('<h2>%s</h2><ol class="drawer-footnotes-endnotes">%s</ol>', __('Footnotes'), $lis);
     }
 
@@ -84,4 +91,4 @@ class DrawerFootnotes
     }
 }
 
-$tfn = new DrawerFootnotes();
+new DrawerFootnotes();
