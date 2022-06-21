@@ -70,8 +70,9 @@ class DrawerFootnotes
                 'ref_id' => $ref_id,
                 'content' => $content
             ));
-        return sprintf('<sup id="%s" class="drawer-footnotes-reference" data-drawer-footnotes-number="%s" data-drawer-footnotes-to="%s"><a href="#%s">[%d]</a></sup>',
-            $ref_id, $n, $id, $id, $n);
+        $a = sprintf('<a href="#%s">[%d]</a>', $id, $n );
+        return sprintf('<sup id="%s" class="drawer-footnotes-reference" data-drawer-footnotes-number="%s" data-drawer-footnotes-to="%s">%s</sup>',
+            $ref_id, $n, $id, $a);
     }
 
     public function endnotes_callback($atts, $content = null)
