@@ -75,6 +75,10 @@ class DrawerFootnotes
 
     public function endnotes_callback($atts, $content = null)
     {
+        // 脚注が登録されていなければ文末脚注も不要
+        if (empty($this->footnotes)) {
+            return;
+        }
         $lis = '';
         foreach ($this->footnotes as $footnote) {
             $jump_link = sprintf('<b class="drawer-footnotes-scroll-up""><a href="#%s">^</a></b>', $footnote['ref_id']);
