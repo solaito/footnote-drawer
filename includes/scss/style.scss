@@ -1,0 +1,49 @@
+#drawer-footnotes-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background-color: black;
+  color: white;
+  padding: 10px 20px 20px 20px;
+  z-index: 100;
+  opacity: 0.9;
+}
+
+.drawer-footnotes-scroll-up {
+  margin-right: 8px;
+}
+
+.drawer-footnotes-endnotes a {
+  text-decoration: none;
+}
+
+.drawer-footnotes-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 15px 0;
+}
+
+.drawer-footnotes-contents sup {
+  margin-right: 8px;
+}
+
+.drawer-footnotes-close-button {
+  background-color: inherit;
+  border: none;
+  color: white;
+  font-size: 1em;
+  font-weight: 700;
+  padding: 0.5em;
+  line-height: 0;
+  &:hover {
+    background-color: inherit;
+  }
+  &::after {
+    display: inline-block;
+    content: "\00d7";
+  }
+}
+
+

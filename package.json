@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "setup": "yarn",
+    "build": "wp-scripts build includes/js",
+    "lint": "wp-scripts lint-js includes/js",
+    "scss": "sass includes/scss:includes/css"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^19.0.0",
+    "sass": "^1.52.3"
+  }
+}
