@@ -39,6 +39,10 @@
     line-height: 0;
 }
 
+.drawer-footnotes-close-button:hover {
+    background-color: inherit;
+}
+
 .drawer-footnotes-close-button::after {
     display: inline-block;
     content: "\00d7";
