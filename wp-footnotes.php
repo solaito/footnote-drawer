@@ -61,8 +61,9 @@ class DrawerFootnotes
     public function footnote_callback($atts, $content = null)
     {
         $n = count($this->footnotes) + 1;
-        $id = 'drawer-footnotes-' . $n;
-        $ref_id = 'drawer-footnotes-ref-' . $n;
+        $id_prefix = 'drawer-footnotes-post-'. get_the_ID();
+        $id = $id_prefix . '-' . $n;
+        $ref_id = $id_prefix . '-ref-' . $n;
         array_push($this->footnotes,
             array(
                 'id' => $id,
