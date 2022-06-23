@@ -2,13 +2,25 @@
   position: fixed;
   bottom: 0;
   left: 0;
+  max-height: 0;
   width: 100%;
+  overflow: hidden;
 
   background-color: black;
   color: white;
-  padding: 10px 20px 20px 20px;
   z-index: 100;
-  opacity: 0.9;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .25s 0s ease;
+  // paddingの横幅はアニメーション前後で同じにしておかないと、アニメーション中にテキストの改行位置が変わったりして見栄えが悪い
+  padding: 0 20px;
+
+  &.is-open {
+    padding: 10px 20px 20px 20px;
+    max-height: 50%;
+    opacity: 0.9;
+    visibility: visible;
+  }
 }
 
 .drawer-footnotes-scroll-up {
@@ -47,6 +59,7 @@
   &:hover {
     background-color: inherit;
   }
+
   &::after {
     display: inline-block;
     content: "\00d7";

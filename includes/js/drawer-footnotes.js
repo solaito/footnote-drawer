@@ -1,8 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.drawer-footnotes-reference').forEach((reference) => {
         reference.addEventListener('click', (event) => {
+            // href="#"属性が設定されたaタグにイベントリスナーを設定しているため、デフォルトの挙動でページ内遷移が発生する。
+            // デフォルトの挙動はJavascriptが無効だった場合に必要となる。
+            // Javascriptが有効な場合は不要なので、デフォルトの挙動は無効とする。
+            event.preventDefault();
+
+            let drawer = document.getElementById("drawer-footnotes-container");
+            if (drawer) {
+                return;
+            }
             // 既存のドロワーがあれば削除
-            removeDrawer(event);
+            //removeDrawer();
             // 領域外クリックの場合閉じるようイベントリスナーを登録
             document.addEventListener('click', clickOutsideRemoveDrawer);
 
@@ -10,14 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
             container.setAttribute("id", 'drawer-footnotes-container');
             container.appendChild(createHeader());
             container.appendChild(createContents(event));
+            setTimeout(() => container.setAttribute("class", 'is-open'), 1);
 
             let article = event.currentTarget.closest('article');
             article.insertBefore(container, article.lastChild)
-
-            // href="#"属性が設定されたaタグにイベントリスナーを設定しているため、デフォルトの挙動でページ内遷移が発生する。
-            // デフォルトの挙動はJavascriptが無効だった場合に必要となる。
-            // Javascriptが有効な場合は不要なので、デフォルトの挙動は無効とする。
-            event.preventDefault();
         })
     })
 });
@@ -50,7 +55,8 @@ const createContents = (event) => {
 const removeDrawer = () => {
     let drawer = document.getElementById("drawer-footnotes-container");
     if (drawer) {
-        drawer.remove();
+        drawer.classList.remove('is-open');
+        setTimeout(() => drawer.remove(), 250);
         document.removeEventListener('click', clickOutsideRemoveDrawer);
     }
 }
