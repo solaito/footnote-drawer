@@ -22,6 +22,8 @@ const createWrapper = (event) => {
     wrapper.setAttribute("id", 'drawer-footnotes-wrapper');
     wrapper.appendChild(createMask());
     wrapper.appendChild(createContainer(event));
+    wrapper.addEventListener('touchmove', (event) => {event.preventDefault()}, {passive:false});
+    wrapper.addEventListener('mousewheel', (event) => {event.preventDefault()}, {passive:false});
     setTimeout(() => wrapper.setAttribute("class", 'is-open'), 1);
 
     return wrapper;
