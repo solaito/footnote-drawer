@@ -1,5 +1,6 @@
 #drawer-footnotes-wrapper {
   #drawer-footnotes-mask {
+    z-index: 1000;
     position: fixed;
     top: 0;
     right: 0;
@@ -7,10 +8,14 @@
     left: 0;
 
     background-color: black;
-    opacity: 0.3;
+    opacity: 0;
+    visibility: hidden;
+
+    transition: all .25s 0s ease;
   }
 
   #drawer-footnotes-container {
+    z-index: 1001;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -20,7 +25,6 @@
 
     background-color: black;
     color: white;
-    z-index: 100;
     opacity: 0;
     visibility: hidden;
     transition: all .25s 0s ease;
@@ -29,6 +33,11 @@
   }
 
    &.is-open {
+     #drawer-footnotes-mask {
+       opacity: 0.3;
+       visibility: visible;
+
+     }
      #drawer-footnotes-container {
        padding: 10px 20px 20px 20px;
        max-height: 50%;
