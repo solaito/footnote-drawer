@@ -1,38 +1,37 @@
 <?php
 
 /*
-Plugin Name: Wp Footnotes
-Plugin URI: http://URI_Of_Page_Describing_Plugin_and_Updates
-Description: A brief description of the Plugin.
+Plugin Name: Footnote Drawer
+Plugin URI: https://github.com/solaito/footnote-drawer
+Description: View Footnotes in the drawer.
 Version: 1.0
-Author:
-Author URI: http://URI_Of_The_Plugin_Author
+Author: Tonica, LLC.
+Author URI: https://tonica.llc/
 License: A "Slug" license name e.g. GPL2
 */
 
-define("DRAWER_FOOTNOTE_PLUGIN", __FILE__);
-define("DRAWER_FOOTNOTE_PLUGIN_BASENAME", plugin_basename(DRAWER_FOOTNOTE_PLUGIN));
-define("DRAWER_FOOTNOTE_PLUGIN_DIR_URL", plugin_dir_url(DRAWER_FOOTNOTE_PLUGIN));
+define("FOOTNOTE_DRAWER_PLUGIN", __FILE__);
+define("FOOTNOTE_DRAWER_PLUGIN_BASENAME", plugin_basename(FOOTNOTE_DRAWER_PLUGIN));
+define("FOOTNOTE_DRAWER_PLUGIN_DIR_URL", plugin_dir_url(FOOTNOTE_DRAWER_PLUGIN));
 
-add_action('wp_enqueue_scripts', 'drawer_footnote_enqueue_scripts');
-function drawer_footnote_enqueue_scripts()
+add_action('wp_enqueue_scripts', 'footnote_drawer_enqueue_scripts');
+function footnote_drawer_enqueue_scripts()
 {
-    $data = get_file_data(DRAWER_FOOTNOTE_PLUGIN, array('version' => 'Version'));
+    $data = get_file_data(FOOTNOTE_DRAWER_PLUGIN, array('version' => 'Version'));
     $version = $data['version'];
-    $drawer_footnotes = array(
+    $footnote_drawer = array(
         'plugin' => array(
             'text' => array(
                 'footnotes' => __('Footnotes'),
             )
         )
     );
-    //wp_localize_script('drawer-footnotes-hoge', 'drawer-footnotes-piyo', $param);
-    wp_enqueue_script('drawer-footnotes', DRAWER_FOOTNOTE_PLUGIN_DIR_URL . 'includes/js/drawer-footnotes.js', null, $version);
-    wp_localize_script('drawer-footnotes', 'drawer_footnotes', $drawer_footnotes);
-    wp_enqueue_style('drawer_footnotes', DRAWER_FOOTNOTE_PLUGIN_DIR_URL . 'includes/css/style.css', null, $version);
+    wp_enqueue_script('footnote-drawer', FOOTNOTE_DRAWER_PLUGIN_DIR_URL . 'includes/js/index.js', null, $version);
+    wp_localize_script('footnote-drawer', 'footnote_drawer', $footnote_drawer);
+    wp_enqueue_style('footnote_drawer', FOOTNOTE_DRAWER_PLUGIN_DIR_URL . 'includes/css/style.css', null, $version);
 }
 
-class DrawerFootnotes
+class FootnoteDrawer
 {
     private $footnotes;
 
@@ -49,8 +48,8 @@ class DrawerFootnotes
         // the_postが最初に呼び出されるのでそのタイミングで初期化
         add_filter('the_post', array($this, 'init'));
         add_filter('the_content', array($this, 'add_temp_endnotes_filter'));
-        add_shortcode('dfn', array($this, 'footnote_callback'));
-        add_shortcode('dfn_end', array($this, 'endnotes_callback'));
+        add_shortcode('fnd', array($this, 'footnote_callback'));
+        add_shortcode('fnd_end', array($this, 'endnotes_callback'));
     }
 
     public function init()
@@ -61,7 +60,7 @@ class DrawerFootnotes
     public function footnote_callback($atts, $content = null)
     {
         $n = count($this->footnotes) + 1;
-        $id_prefix = 'drawer-footnotes-post-'. get_the_ID();
+        $id_prefix = 'footnote-drawer-post-'. get_the_ID();
         $id = $id_prefix . '-' . $n;
         $ref_id = $id_prefix . '-ref-' . $n;
         array_push($this->footnotes,
@@ -71,7 +70,7 @@ class DrawerFootnotes
                 'content' => $content
             ));
         $a = sprintf('<a href="#%s">[%d]</a>', $id, $n );
-        return sprintf('<sup id="%s" class="drawer-footnotes-reference" data-drawer-footnotes-number="%s" data-drawer-footnotes-to="%s">%s</sup>',
+        return sprintf('<sup id="%s" class="footnote-drawer-reference" data-footnote-drawer-number="%s" data-footnote-drawer-to="%s">%s</sup>',
             $ref_id, $n, $id, $a);
     }
 
@@ -83,18 +82,18 @@ class DrawerFootnotes
         }
         $lis = '';
         foreach ($this->footnotes as $footnote) {
-            $jump_link = sprintf('<b class="drawer-footnotes-scroll-up""><a href="#%s">^</a></b>', $footnote['ref_id']);
-            $content = sprintf('<span class="drawer-footnotes-endnotes-contents">%s</span>', $footnote['content']);
+            $jump_link = sprintf('<b class="footnote-drawer-scroll-up""><a href="#%s">^</a></b>', $footnote['ref_id']);
+            $content = sprintf('<span class="footnote-drawer-endnotes-contents">%s</span>', $footnote['content']);
             $lis .= sprintf('<li id="%s">%s%s</li>', $footnote['id'], $jump_link, $content);
         }
 
-        return sprintf('<h2>%s</h2><ol class="drawer-footnotes-endnotes">%s</ol>', __('Footnotes'), $lis);
+        return sprintf('<h2>%s</h2><ol class="footnote-drawer-endnotes">%s</ol>', __('Footnotes'), $lis);
     }
 
     public function add_temp_endnotes_filter($content)
     {
-        return $content . '[dfn_end]';
+        return $content . '[fnd_end]';
     }
 }
 
-new DrawerFootnotes();
+new FootnoteDrawer();

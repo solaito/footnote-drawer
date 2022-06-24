@@ -1,5 +1,5 @@
-#drawer-footnotes-wrapper {
-  #drawer-footnotes-mask {
+#footnote-drawer-wrapper {
+  #footnote-drawer-mask {
     z-index: 1000;
     position: fixed;
     top: 0;
@@ -14,7 +14,7 @@
     transition: all .25s 0s ease;
   }
 
-  #drawer-footnotes-container {
+  #footnote-drawer-container {
     z-index: 1001;
     position: fixed;
     bottom: 0;
@@ -33,12 +33,12 @@
   }
 
    &.is-open {
-     #drawer-footnotes-mask {
+     #footnote-drawer-mask {
        opacity: 0.3;
        visibility: visible;
 
      }
-     #drawer-footnotes-container {
+     #footnote-drawer-container {
        padding: 10px 20px 20px 20px;
        max-height: 50%;
        opacity: 0.9;
@@ -47,25 +47,25 @@
    }
 }
 
-.drawer-footnotes-scroll-up {
+.footnote-drawer-scroll-up {
   margin-right: 8px;
 }
 
-.drawer-footnotes-endnotes a {
+.footnote-drawer-endnotes a {
   text-decoration: none;
 }
 
-.drawer-footnotes-header {
+.footnote-drawer-header {
   display: flex;
   justify-content: space-between;
   margin: 10px 0 15px 0;
 }
 
-.drawer-footnotes-contents sup {
+.footnote-drawer-contents sup {
   margin-right: 8px;
 }
 
-.drawer-footnotes-close-button {
+.footnote-drawer-close-button {
   background-color: inherit;
   border: none;
   color: white;

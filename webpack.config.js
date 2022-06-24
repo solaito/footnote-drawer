@@ -1,6 +1,6 @@
 module.exports = {
     entry: {
-        'dest/includes/js/drawer-footnotes': './includes/js/drawer-footnotes.js',
+        'dest/includes/js/index': './includes/js/index.js',
     },
     output: {
         path: __dirname,
