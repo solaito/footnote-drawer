@@ -6,26 +6,43 @@ document.addEventListener('DOMContentLoaded', () => {
             // Javascriptが有効な場合は不要なので、デフォルトの挙動は無効とする。
             event.preventDefault();
 
-            let drawer = document.getElementById("drawer-footnotes-container");
-            if (drawer) {
+            // 既存のドロワーがあれば抜ける
+            if (document.getElementById("drawer-footnotes-wrapper")) {
                 return;
             }
-            // 既存のドロワーがあれば削除
-            //removeDrawer();
-            // 領域外クリックの場合閉じるようイベントリスナーを登録
-            document.addEventListener('click', clickOutsideRemoveDrawer);
-
-            let container = document.createElement('div');
-            container.setAttribute("id", 'drawer-footnotes-container');
-            container.appendChild(createHeader());
-            container.appendChild(createContents(event));
-            setTimeout(() => container.setAttribute("class", 'is-open'), 1);
 
             let article = event.currentTarget.closest('article');
-            article.insertBefore(container, article.lastChild)
+            article.insertBefore(createWrapper(event), article.lastChild)
         })
     })
 });
+
+const createWrapper = (event) => {
+    let wrapper = document.createElement('div');
+    wrapper.setAttribute("id", 'drawer-footnotes-wrapper');
+    wrapper.appendChild(createMask());
+    wrapper.appendChild(createContainer(event));
+    setTimeout(() => wrapper.setAttribute("class", 'is-open'), 1);
+
+    return wrapper;
+}
+
+const createMask = () => {
+    let mask = document.createElement('div');
+    mask.setAttribute('id', 'drawer-footnotes-mask');
+    mask.addEventListener('click', removeDrawer);
+
+    return mask;
+}
+
+const createContainer = (event) => {
+    let container = document.createElement('div');
+    container.setAttribute("id", 'drawer-footnotes-container');
+    container.appendChild(createHeader());
+    container.appendChild(createContents(event));
+
+    return container;
+}
 
 const createHeader = () => {
     let header = document.createElement('div');
@@ -53,22 +70,9 @@ const createContents = (event) => {
 }
 
 const removeDrawer = () => {
-    let drawer = document.getElementById("drawer-footnotes-container");
-    if (drawer) {
-        drawer.classList.remove('is-open');
-        setTimeout(() => drawer.remove(), 250);
-        document.removeEventListener('click', clickOutsideRemoveDrawer);
-    }
-}
-
-const clickOutsideRemoveDrawer = (event) => {
-    // ドロワー展開時のクリックイベントも拾うので、その場合は抜ける
-    // 他の処理との兼ね合いもあるので、イベントの伝播は止めない
-    if (event.target.closest('.drawer-footnotes-reference') !== null) {
-        return;
-    }
-    // ドロワー以外がクリックされた場合はドロワーを削除する
-    if (event.target.closest('#drawer-footnotes-container') === null) {
-        removeDrawer()
+    let wrapper = document.getElementById("drawer-footnotes-wrapper");
+    if (wrapper) {
+        wrapper.classList.remove('is-open');
+        setTimeout(() => wrapper.remove(), 250);
     }
 }
