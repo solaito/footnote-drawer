@@ -7,7 +7,7 @@ Description: View Footnotes in the drawer.
 Version: 1.0
 Author: Tonica, LLC.
 Author URI: https://tonica.llc/
-License: A "Slug" license name e.g. GPL2
+License: GPL2
 */
 
 define("FOOTNOTE_DRAWER_PLUGIN", __FILE__);
@@ -33,6 +33,7 @@ function footnote_drawer_enqueue_scripts()
 
 class FootnoteDrawer
 {
+    const PREFIX = 'footnote-drawer';
     private $footnotes;
 
     /*
@@ -60,7 +61,7 @@ class FootnoteDrawer
     public function footnote_callback($atts, $content = null)
     {
         $n = count($this->footnotes) + 1;
-        $id_prefix = 'footnote-drawer-post-'. get_the_ID();
+        $id_prefix = self::PREFIX . '-post-' . get_the_ID();
         $id = $id_prefix . '-' . $n;
         $ref_id = $id_prefix . '-ref-' . $n;
         array_push($this->footnotes,
@@ -69,9 +70,9 @@ class FootnoteDrawer
                 'ref_id' => $ref_id,
                 'content' => $content
             ));
-        $a = sprintf('<a href="#%s">[%d]</a>', $id, $n );
-        return sprintf('<sup id="%s" class="footnote-drawer-reference" data-footnote-drawer-number="%s" data-footnote-drawer-to="%s">%s</sup>',
-            $ref_id, $n, $id, $a);
+        $a = sprintf('<a href="#%s">[%d]</a>', $id, $n);
+        return sprintf('<sup id="%s" class="%s-reference" data-%s-number="%s" data-%s-to="%s">%s</sup>',
+            $ref_id, self::PREFIX, self::PREFIX, $n, self::PREFIX, $id, $a);
     }
 
     public function endnotes_callback($atts, $content = null)
@@ -82,12 +83,12 @@ class FootnoteDrawer
         }
         $lis = '';
         foreach ($this->footnotes as $footnote) {
-            $jump_link = sprintf('<b class="footnote-drawer-scroll-up""><a href="#%s">^</a></b>', $footnote['ref_id']);
-            $content = sprintf('<span class="footnote-drawer-endnotes-contents">%s</span>', $footnote['content']);
+            $jump_link = sprintf('<b class="%s-scroll-up""><a href="#%s">^</a></b>', self::PREFIX, $footnote['ref_id']);
+            $content = sprintf('<span class="%s-endnotes-contents">%s</span>', self::PREFIX, $footnote['content']);
             $lis .= sprintf('<li id="%s">%s%s</li>', $footnote['id'], $jump_link, $content);
         }
 
-        return sprintf('<h2>%s</h2><ol class="footnote-drawer-endnotes">%s</ol>', __('Footnotes'), $lis);
+        return sprintf('<h2>%s</h2><ol class="%s-endnotes">%s</ol>', __('Footnotes'), self::PREFIX, $lis);
     }
 
     public function add_temp_endnotes_filter($content)
