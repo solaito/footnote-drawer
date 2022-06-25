@@ -1,0 +1,93 @@
+#footnote-drawer-wrapper {
+  #footnote-drawer-mask {
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background-color: black;
+    opacity: 0;
+    visibility: hidden;
+
+    transition: all .25s 0s ease;
+  }
+
+  #footnote-drawer-container {
+    z-index: 1001;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    max-height: 0;
+    width: 100%;
+    overflow: hidden;
+
+    background-color: black;
+    color: white;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .25s 0s ease;
+    // paddingの横幅はアニメーション前後で同じにしておかないと、アニメーション中にテキストの改行位置が変わったりして見栄えが悪い
+    padding: 0 20px;
+  }
+
+   &.is-open {
+     #footnote-drawer-mask {
+       opacity: 0.3;
+       visibility: visible;
+
+     }
+     #footnote-drawer-container {
+       padding: 10px 20px 20px 20px;
+       max-height: 50%;
+       opacity: 0.9;
+       visibility: visible;
+     }
+   }
+}
+
+.footnote-drawer-scroll-up {
+  margin-right: 8px;
+}
+
+.footnote-drawer-endnotes a {
+  text-decoration: none;
+}
+
+.footnote-drawer-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 15px 0;
+}
+
+.footnote-drawer-contents sup {
+  margin-right: 8px;
+}
+
+.footnote-drawer-close-button {
+  background-color: inherit;
+  border: none;
+  color: white;
+  font-size: 1em;
+  font-weight: 700;
+  padding: 0.5em;
+  line-height: 0;
+  outline: none;
+
+  &:focus {
+    background-color: inherit;
+    outline: none;
+  }
+
+  &:hover {
+    background-color: inherit;
+  }
+
+  &::after {
+    display: inline-block;
+    content: "\00d7";
+  }
+}
+
+

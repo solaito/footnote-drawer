@@ -1,1 +1,1 @@
-# wp-footnotes
+# footnote-drawer
