@@ -15,11 +15,14 @@ Footnote Drawer displays footnotes in the drawer UI.
 
 Footnote Drawer displays footnotes in the drawer UI.
 
+== Usage ==
+Use [fnd]sample footnote[/fnd] in your posts and pages.
+
 == Installation ==
 
 1. From the WP admin panel, click “Plugins” -> “Add new”.
 1. In the browser input box, type “Footnote Drawer”.
-1. Select the “Watts” plugin and click “Install”.
+1. Select the “Footnote Drawer” plugin and click “Install”.
 1. Activate the plugin.
 
 OR…
