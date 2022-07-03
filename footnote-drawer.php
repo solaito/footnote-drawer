@@ -8,11 +8,15 @@ Version: 1.0.0
 Author: Tonica, LLC.
 Author URI: https://tonica.llc/
 License: GPL2
+Text Domain: footnote-drawer
 */
 
 define("FOOTNOTE_DRAWER_PLUGIN", __FILE__);
 define("FOOTNOTE_DRAWER_PLUGIN_BASENAME", plugin_basename(FOOTNOTE_DRAWER_PLUGIN));
 define("FOOTNOTE_DRAWER_PLUGIN_DIR_URL", plugin_dir_url(FOOTNOTE_DRAWER_PLUGIN));
+const FOOTNOTE_DRAWER_TEXT_DOMAIN = 'footnote-drawer';
+
+require_once 'includes/options-page.php';
 
 add_action('wp_enqueue_scripts', 'footnote_drawer_enqueue_scripts');
 function footnote_drawer_enqueue_scripts()
