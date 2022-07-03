@@ -92,7 +92,7 @@ class Footnote_Drawer
             $lis .= sprintf('<li id="%s">%s%s</li>', $footnote['id'], $jump_link, $content);
         }
 
-        return sprintf('<h2>%s</h2><ol class="%s-endnotes">%s</ol>', __('Footnotes'), self::PREFIX, $lis);
+        return sprintf('<h2>%s</h2><ol class="%s-endnotes">%s</ol>', __('Footnotes', 'footnote-drawer'), self::PREFIX, $lis);
     }
 
     public function add_temp_endnotes_filter($content)
