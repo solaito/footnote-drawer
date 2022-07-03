@@ -35,7 +35,7 @@ function footnote_drawer_enqueue_scripts()
     wp_enqueue_style('footnote_drawer', FOOTNOTE_DRAWER_PLUGIN_DIR_URL . 'includes/css/style.css', null, $version);
 }
 
-class FootnoteDrawer
+class Footnote_Drawer
 {
     const PREFIX = 'footnote-drawer';
     private $footnotes;
@@ -101,4 +101,4 @@ class FootnoteDrawer
     }
 }
 
-new FootnoteDrawer();
+new Footnote_Drawer();
