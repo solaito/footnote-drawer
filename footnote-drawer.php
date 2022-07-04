@@ -4,7 +4,7 @@
 Plugin Name: Footnote Drawer
 Plugin URI: https://github.com/solaito/footnote-drawer
 Description: View Footnotes in the drawer.
-Version: 1.0.0
+Version: 1.0.1
 Author: Tonica, LLC.
 Author URI: https://tonica.llc/
 License: GPL2
