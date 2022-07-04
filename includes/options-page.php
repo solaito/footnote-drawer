@@ -2,6 +2,7 @@
 
 class Footnote_Drawer_Options_Page
 {
+    const OPTION_NAME = 'footnote_drawer_option_name';
     const PAGE = 'footnote-drawer-admin';
     const TITLE = 'Footnote Drawer';
     const SECTIONS = [
@@ -43,7 +44,7 @@ class Footnote_Drawer_Options_Page
 
     public function create_admin_page()
     {
-        $this->options = get_option('footnote_drawer_option_name'); ?>
+        $this->options = get_option(self::OPTION_NAME); ?>
 
         <div class="wrap">
             <h1>Footnote Drawer</h1>
@@ -63,7 +64,7 @@ class Footnote_Drawer_Options_Page
     {
         register_setting(
             'option_group',
-            'footnote_drawer_option_name',
+            self::OPTION_NAME,
             array($this, 'sanitize')
         );
 
@@ -107,7 +108,8 @@ class Footnote_Drawer_Options_Page
         $id = $args[0];
 
         $current_value = isset($this->options[$id]) ? $this->options[$id] : '';
-        $str = sprintf('<input type="text" name="footnote_drawer_option_name[%s]" id="%s" value="%s" />',
+        $str = sprintf('<input type="text" name="%s[%s]" id="%s" value="%s" />',
+            self::OPTION_NAME,
             $id,
             $id,
             $current_value);
