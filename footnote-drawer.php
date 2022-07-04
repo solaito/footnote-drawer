@@ -96,7 +96,7 @@ class Footnote_Drawer
         }
 
         return sprintf('<h2>%s</h2><ol class="%s-endnotes">%s</ol>',
-            $this->footnotes_word($options),
+            esc_html($this->footnotes_word($options)),
             self::PREFIX, $lis);
     }
 
