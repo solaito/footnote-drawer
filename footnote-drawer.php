@@ -22,11 +22,13 @@ add_action('wp_enqueue_scripts', 'footnote_drawer_enqueue_scripts');
 function footnote_drawer_enqueue_scripts()
 {
     $data = get_file_data(FOOTNOTE_DRAWER_PLUGIN, array('version' => 'Version'));
+    $options = get_option('footnote_drawer_option_name');
     $version = $data['version'];
     $footnote_drawer = array(
         'plugin' => array(
             'text' => array(
-                'footnotes' => __('Footnotes'),
+                'footnotes' => isset($options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']]) ?
+                    $options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']] :  __('Footnotes', FOOTNOTE_DRAWER_TEXT_DOMAIN)
             )
         )
     );
@@ -81,6 +83,7 @@ class Footnote_Drawer
 
     public function endnotes_callback($atts, $content = null)
     {
+        $options = get_option('footnote_drawer_option_name');
         // 脚注が登録されていなければ文末脚注も不要
         if (empty($this->footnotes)) {
             return;
@@ -92,7 +95,10 @@ class Footnote_Drawer
             $lis .= sprintf('<li id="%s">%s%s</li>', $footnote['id'], $jump_link, $content);
         }
 
-        return sprintf('<h2>%s</h2><ol class="%s-endnotes">%s</ol>', __('Footnotes', 'footnote-drawer'), self::PREFIX, $lis);
+        return sprintf('<h2>%s</h2><ol class="%s-endnotes">%s</ol>',
+            isset($options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']]) ?
+                $options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']] :  __('Footnotes', FOOTNOTE_DRAWER_TEXT_DOMAIN),
+            self::PREFIX, $lis);
     }
 
     public function add_temp_endnotes_filter($content)
