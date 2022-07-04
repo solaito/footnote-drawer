@@ -4,36 +4,24 @@
 Plugin Name: Footnote Drawer
 Plugin URI: https://github.com/solaito/footnote-drawer
 Description: View Footnotes in the drawer.
-Version: 1.0.0
+Version: 1.0.1
 Author: Tonica, LLC.
 Author URI: https://tonica.llc/
 License: GPL2
+Text Domain: footnote-drawer
 */
 
 define("FOOTNOTE_DRAWER_PLUGIN", __FILE__);
 define("FOOTNOTE_DRAWER_PLUGIN_BASENAME", plugin_basename(FOOTNOTE_DRAWER_PLUGIN));
 define("FOOTNOTE_DRAWER_PLUGIN_DIR_URL", plugin_dir_url(FOOTNOTE_DRAWER_PLUGIN));
+const FOOTNOTE_DRAWER_TEXT_DOMAIN = 'footnote-drawer';
 
-add_action('wp_enqueue_scripts', 'footnote_drawer_enqueue_scripts');
-function footnote_drawer_enqueue_scripts()
-{
-    $data = get_file_data(FOOTNOTE_DRAWER_PLUGIN, array('version' => 'Version'));
-    $version = $data['version'];
-    $footnote_drawer = array(
-        'plugin' => array(
-            'text' => array(
-                'footnotes' => __('Footnotes'),
-            )
-        )
-    );
-    wp_enqueue_script('footnote-drawer', FOOTNOTE_DRAWER_PLUGIN_DIR_URL . 'includes/js/index.js', null, $version);
-    wp_localize_script('footnote-drawer', 'footnote_drawer', $footnote_drawer);
-    wp_enqueue_style('footnote_drawer', FOOTNOTE_DRAWER_PLUGIN_DIR_URL . 'includes/css/style.css', null, $version);
-}
+require_once 'includes/options-page.php';
 
-class FootnoteDrawer
+class Footnote_Drawer
 {
     const PREFIX = 'footnote-drawer';
+
     private $footnotes;
 
     /*
@@ -48,6 +36,7 @@ class FootnoteDrawer
     {
         // the_postが最初に呼び出されるのでそのタイミングで初期化
         add_filter('the_post', array($this, 'init'));
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
         add_filter('the_content', array($this, 'add_temp_endnotes_filter'));
         add_shortcode('fnd', array($this, 'footnote_callback'));
         add_shortcode('fnd_end', array($this, 'endnotes_callback'));
@@ -56,6 +45,23 @@ class FootnoteDrawer
     public function init()
     {
         $this->footnotes = [];
+    }
+
+    public function enqueue_scripts()
+    {
+        $data = get_file_data(FOOTNOTE_DRAWER_PLUGIN, array('version' => 'Version'));
+        $options = get_option('footnote_drawer_option_name');
+        $version = $data['version'];
+        $footnote_drawer = array(
+            'plugin' => array(
+                'words' => array(
+                    'footnotes' => $this->footnotes_word($options),
+                )
+            )
+        );
+        wp_enqueue_script('footnote-drawer', FOOTNOTE_DRAWER_PLUGIN_DIR_URL . 'includes/js/index.js', null, $version);
+        wp_localize_script('footnote-drawer', 'footnote_drawer', $footnote_drawer);
+        wp_enqueue_style('footnote_drawer', FOOTNOTE_DRAWER_PLUGIN_DIR_URL . 'includes/css/style.css', null, $version);
     }
 
     public function footnote_callback($atts, $content = null)
@@ -77,6 +83,7 @@ class FootnoteDrawer
 
     public function endnotes_callback($atts, $content = null)
     {
+        $options = get_option('footnote_drawer_option_name');
         // 脚注が登録されていなければ文末脚注も不要
         if (empty($this->footnotes)) {
             return;
@@ -88,13 +95,23 @@ class FootnoteDrawer
             $lis .= sprintf('<li id="%s">%s%s</li>', $footnote['id'], $jump_link, $content);
         }
 
-        return sprintf('<h2>%s</h2><ol class="%s-endnotes">%s</ol>', __('Footnotes'), self::PREFIX, $lis);
+        return sprintf('<h2>%s</h2><ol class="%s-endnotes">%s</ol>',
+            $this->footnotes_word($options),
+            self::PREFIX, $lis);
     }
 
     public function add_temp_endnotes_filter($content)
     {
         return $content . '[fnd_end]';
     }
+
+    private function footnotes_word($options)
+    {
+        $word =  $options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']];
+        $default = 'Footnotes';
+        return isset($word) ?
+            $word : __($default, FOOTNOTE_DRAWER_TEXT_DOMAIN);
+    }
 }
 
-new FootnoteDrawer();
+new Footnote_Drawer();
