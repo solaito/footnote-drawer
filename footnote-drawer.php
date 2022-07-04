@@ -18,28 +18,10 @@ const FOOTNOTE_DRAWER_TEXT_DOMAIN = 'footnote-drawer';
 
 require_once 'includes/options-page.php';
 
-add_action('wp_enqueue_scripts', 'footnote_drawer_enqueue_scripts');
-function footnote_drawer_enqueue_scripts()
-{
-    $data = get_file_data(FOOTNOTE_DRAWER_PLUGIN, array('version' => 'Version'));
-    $options = get_option('footnote_drawer_option_name');
-    $version = $data['version'];
-    $footnote_drawer = array(
-        'plugin' => array(
-            'text' => array(
-                'footnotes' => isset($options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']]) ?
-                    $options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']] :  __('Footnotes', FOOTNOTE_DRAWER_TEXT_DOMAIN)
-            )
-        )
-    );
-    wp_enqueue_script('footnote-drawer', FOOTNOTE_DRAWER_PLUGIN_DIR_URL . 'includes/js/index.js', null, $version);
-    wp_localize_script('footnote-drawer', 'footnote_drawer', $footnote_drawer);
-    wp_enqueue_style('footnote_drawer', FOOTNOTE_DRAWER_PLUGIN_DIR_URL . 'includes/css/style.css', null, $version);
-}
-
 class Footnote_Drawer
 {
     const PREFIX = 'footnote-drawer';
+
     private $footnotes;
 
     /*
@@ -54,6 +36,7 @@ class Footnote_Drawer
     {
         // the_postが最初に呼び出されるのでそのタイミングで初期化
         add_filter('the_post', array($this, 'init'));
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
         add_filter('the_content', array($this, 'add_temp_endnotes_filter'));
         add_shortcode('fnd', array($this, 'footnote_callback'));
         add_shortcode('fnd_end', array($this, 'endnotes_callback'));
@@ -62,6 +45,23 @@ class Footnote_Drawer
     public function init()
     {
         $this->footnotes = [];
+    }
+
+    public function enqueue_scripts()
+    {
+        $data = get_file_data(FOOTNOTE_DRAWER_PLUGIN, array('version' => 'Version'));
+        $options = get_option('footnote_drawer_option_name');
+        $version = $data['version'];
+        $footnote_drawer = array(
+            'plugin' => array(
+                'words' => array(
+                    'footnotes' => $this->footnotes_word($options),
+                )
+            )
+        );
+        wp_enqueue_script('footnote-drawer', FOOTNOTE_DRAWER_PLUGIN_DIR_URL . 'includes/js/index.js', null, $version);
+        wp_localize_script('footnote-drawer', 'footnote_drawer', $footnote_drawer);
+        wp_enqueue_style('footnote_drawer', FOOTNOTE_DRAWER_PLUGIN_DIR_URL . 'includes/css/style.css', null, $version);
     }
 
     public function footnote_callback($atts, $content = null)
@@ -96,14 +96,21 @@ class Footnote_Drawer
         }
 
         return sprintf('<h2>%s</h2><ol class="%s-endnotes">%s</ol>',
-            isset($options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']]) ?
-                $options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']] :  __('Footnotes', FOOTNOTE_DRAWER_TEXT_DOMAIN),
+            $this->footnotes_word($options),
             self::PREFIX, $lis);
     }
 
     public function add_temp_endnotes_filter($content)
     {
         return $content . '[fnd_end]';
+    }
+
+    private function footnotes_word($options)
+    {
+        $word =  $options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']];
+        $default = 'Footnotes';
+        return isset($word) ?
+            $word : __($default, FOOTNOTE_DRAWER_TEXT_DOMAIN);
     }
 }
 

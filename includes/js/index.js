@@ -57,7 +57,7 @@ const createContainer = (event) => {
 const createHeader = () => {
     let header = document.createElement('div');
     header.setAttribute('class', `${prefix}-header`);
-    header.innerText = footnote_drawer.plugin.text.footnotes;
+    header.innerText = footnote_drawer.plugin.words.footnotes;
     let close_button = document.createElement('button');
     close_button.setAttribute('type', 'button');
     close_button.setAttribute('class', `${prefix}-close-button`);

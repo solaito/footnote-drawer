@@ -94,7 +94,6 @@ class Footnote_Drawer_Options_Page
                 $sanitary_values[$id] = $input[$id];
             }
         }
-        var_dump($sanitary_values);
         return $sanitary_values;
     }
 
