@@ -107,7 +107,7 @@ class Footnote_Drawer
 
     private function footnotes_word($options)
     {
-        $word =  $options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']];
+        $word = $options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']];
         $default = 'Footnotes';
         return isset($word) ?
             $word : __($default, FOOTNOTE_DRAWER_TEXT_DOMAIN);
