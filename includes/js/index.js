@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            let article = event.currentTarget.closest('article');
-            article.insertBefore(createWrapper(event), article.lastChild)
+            let post = event.currentTarget.closest('.post');
+            post.insertBefore(createWrapper(event), post.lastChild)
         })
     })
 });
