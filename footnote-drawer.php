@@ -96,7 +96,7 @@ class Footnote_Drawer
         }
 
         return sprintf('<h2>%s</h2><ol class="%s-endnotes">%s</ol>',
-            $this->footnotes_word($options),
+            esc_html($this->footnotes_word($options)),
             self::PREFIX, $lis);
     }
 
@@ -107,7 +107,7 @@ class Footnote_Drawer
 
     private function footnotes_word($options)
     {
-        $word =  $options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']];
+        $word = $options[Footnote_Drawer_Options_Page::IDS['WORDING_FOOTNOTES']];
         $default = 'Footnotes';
         return isset($word) ?
             $word : __($default, FOOTNOTE_DRAWER_TEXT_DOMAIN);

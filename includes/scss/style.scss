@@ -47,12 +47,15 @@
    }
 }
 
-.footnote-drawer-scroll-up {
-  margin-right: 8px;
+sup.footnote-drawer-reference a{
+  text-decoration: none;
 }
 
-.footnote-drawer-endnotes a {
-  text-decoration: none;
+.footnote-drawer-scroll-up {
+  margin-right: 8px;
+  a {
+    text-decoration: none;
+  }
 }
 
 .footnote-drawer-header {
