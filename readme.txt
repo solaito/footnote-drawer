@@ -3,9 +3,9 @@ Contributors: solaito
 Donate link: https://tonica.llc/
 Tags: footnote, footnotes, cite, drawer
 Requires at least: 5.7
-Tested up to: 6.1
+Tested up to: 6.4
 Requires PHP: 5.6
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,10 @@ I'm waiting for your questions.
 == Screenshots ==
 
 == Changelog ==
+
+= 1.0.4 =
+* Bug fix.
+* Tested up to WP 6.4.
 
 = 1.0.3 =
 * Bug fix.
